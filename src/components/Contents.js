@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimateSharedLayout, AnimatePresence } from 'framer-motion'
-import { Grid, Typography, Chip } from '@material-ui/core';
+import { Grid, Typography, Tooltip, Zoom } from '@material-ui/core';
 import { getListData } from "../API/mainAPI";
+import Rodal from 'rodal';
 
 function Item({item}) {
     const [isOpen, setIsOpen] = useState(false);
@@ -40,6 +41,7 @@ function Content() {
 
 function Contents() {
     const [listDatas, setListDatas] = useState([]);
+    const [state, setState] = useState(false);
     const serviceKey = "cMsWyKP9JICZ%2FwdGUDKNGYy0Zd%2FTLcUwYaStouO%2BPOdDQ1%2FMsE1zNuuC7%2FMf2n9N7f1BsZre7ngzY52czKk85w%3D%3D";
 
     const fatchListData = async() => {
@@ -56,15 +58,24 @@ function Contents() {
     },[])
     console.log('listDatas', listDatas)
 
+    const longText = `
+        Aliquam eget finibus ante, non facilisis lectus. Sed vitae dignissim est, vel aliquam tellus.
+        Praesent non nunc mollis, fermentum neque at, semper arcu.
+        Nullam eget est sed sem iaculis gravida eget vitae justo.
+    `;
+
     return (
         <Grid container spacing={9} className="main-content-warp">
-            <Typography style={{fontSize:'18px', fontWeight:700, marginTop:'20px', marginBottom:'30px'}}>
-                관광 기후 등급
-                <i className="fa fa-question-circle" style={{marginLeft:'5px'}}></i>
-            </Typography>
-            {/* <Typography style={{fontSize:'14px', fontWeight:700, marginTop:'5px', marginBottom:'15px', color:'#4f4f4f'}}>
-                조회조건(현재시각, 예보기간, 시군구 아이디)으로 시군구별 관광기후지수 데이터(시군구이름, 관광기후지수, 관광기후등급 등)를 조회하는 기능
-            </Typography> */}
+            <div style={{marginTop:'20px', marginBottom:'30px', display:'flex', lineHeight:'21px'}}>
+
+                <Typography style={{fontSize:'18px', fontWeight:700, marginRight:'5px'}}>
+                    관광 기후 등급
+                </Typography>
+                <Tooltip TransitionComponent={Zoom} title={longText}>
+                    <i className="fa fa-question-circle fa-lg"></i>
+                </Tooltip>
+            </div>
+            
             <AnimateSharedLayout>
                 <motion.ul layout initial={{ borderRadius: 25 }}>
                     {listDatas?.map((item, index) => (

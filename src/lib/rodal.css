@@ -27,9 +27,9 @@
   bottom: 0;
   margin: auto;
   z-index: 101;
-  padding: 15px;
+  padding: 25px;
   background: #fff;
-  border-radius: 3px;
+  border-radius: 40px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
@@ -41,8 +41,8 @@
 .rodal-close {
   position: absolute;
   cursor: pointer;
-  top: 16px;
-  right: 16px;
+  top: 30px;
+  right: 30px;
   width: 16px;
   height: 16px;
 }
