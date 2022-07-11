@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimateSharedLayout, AnimatePresence } from 'framer-motion'
-import { Grid, Typography, Tooltip, Zoom } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import { getListData } from "../API/mainAPI";
-import Rodal from 'rodal';
+import SelecteForm from "../components/SelecteForm";
+
 
 function Item({item}) {
     const [isOpen, setIsOpen] = useState(false);
@@ -19,12 +20,13 @@ function Item({item}) {
                 }}
             />
         </motion.div>
-        <AnimatePresence>{isOpen && <Content />}</AnimatePresence>
+        <AnimatePresence>{isOpen && <Content item={item} />}</AnimatePresence>
       </motion.li>
     );
   }
 
-function Content() {
+function Content({item}) {
+    console.log('item', item)
     return (
         <motion.div
             layout
@@ -32,16 +34,21 @@ function Content() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             >
-            <div className="content"></div>
-            <div className="content"></div>
-            <div className="content"></div>
+            <div className="content">
+                <b>조회 일시</b> {item.tm}
+            </div>
+            <div className="content">
+                <b>관광 기후 등급</b> {item.TCI_GRADE}
+            </div>
+            <div className="content">
+                <b>시군구 ID</b> {item.cityAreaId}
+            </div>
         </motion.div>
     )
 }
 
 function Contents() {
     const [listDatas, setListDatas] = useState([]);
-    const [state, setState] = useState(false);
     const serviceKey = "cMsWyKP9JICZ%2FwdGUDKNGYy0Zd%2FTLcUwYaStouO%2BPOdDQ1%2FMsE1zNuuC7%2FMf2n9N7f1BsZre7ngzY52czKk85w%3D%3D";
 
     const fatchListData = async() => {
@@ -56,26 +63,21 @@ function Contents() {
     useEffect(() => {
         fatchListData();  
     },[])
-    console.log('listDatas', listDatas)
-
-    const longText = `
-        Aliquam eget finibus ante, non facilisis lectus. Sed vitae dignissim est, vel aliquam tellus.
-        Praesent non nunc mollis, fermentum neque at, semper arcu.
-        Nullam eget est sed sem iaculis gravida eget vitae justo.
-    `;
+    // console.log('listDatas', listDatas)
 
     return (
         <Grid container spacing={9} className="main-content-warp">
-            <div style={{marginTop:'20px', marginBottom:'30px', display:'flex', lineHeight:'21px'}}>
-
-                <Typography style={{fontSize:'18px', fontWeight:700, marginRight:'5px'}}>
+            <div style={{marginTop:'20px', marginBottom:'30px'  }}>
+                <Typography style={{fontSize:'18px', fontWeight:700, marginRight:'5px', fontFamily: "'Noto Sans KR', sans-serif"}}>
                     관광 기후 등급
                 </Typography>
-                <Tooltip TransitionComponent={Zoom} title={longText}>
-                    <i className="fa fa-question-circle fa-lg"></i>
-                </Tooltip>
+                <Typography style={{fontSize:'15px', fontFamily: "'Noto Sans KR', sans-serif"}}>
+                    현재시각 및 예보기간으로 시군구별 관광기후지수 데이터를 조회합니다.
+                </Typography>
             </div>
-            
+
+            <SelecteForm />
+
             <AnimateSharedLayout>
                 <motion.ul layout initial={{ borderRadius: 25 }}>
                     {listDatas?.map((item, index) => (

@@ -1,17 +1,17 @@
 import React from "react";
 import { motion } from 'framer-motion'
 
-function MainCard() {
+function Search() {
 
     return (
     <>        
         <motion.input 
             className="search"
-            placeholder=" Search Place Name"
+            // placeholder=" Search Place Name"
         >
         </motion.input>
     </>
     )
 }
 
-export default MainCard
+export default Search

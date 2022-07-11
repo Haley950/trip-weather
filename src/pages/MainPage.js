@@ -10,8 +10,9 @@ import Contents from "../components/Contents";
 function MainPage() {
     return (
     <>
+        <h1 className="focus-in-expand main-title">TRIP WEATHER</h1>
         <Search />
-        <h1 className="title">Hello,Haley 
+        <h1 className="hi-title">Hello, Haley 
             <div className="hvr-icon-pulse-shrink">
             <i className="fa hvr-icon">☔</i>
             </div>
