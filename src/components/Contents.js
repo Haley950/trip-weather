@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimateSharedLayout, AnimatePresence } from 'framer-motion'
 import { Grid, Typography } from '@material-ui/core';
 import { getListData } from "../API/mainAPI";
+import SelecteDateForm from "../components/SelecteDateForm";
 import SelecteForm from "../components/SelecteForm";
 
 
@@ -26,7 +27,6 @@ function Item({item}) {
   }
 
 function Content({item}) {
-    console.log('item', item)
     return (
         <motion.div
             layout
@@ -40,21 +40,22 @@ function Content({item}) {
             <div className="content">
                 <b>관광 기후 등급</b> {item.TCI_GRADE}
             </div>
-            <div className="content">
-                <b>시군구 ID</b> {item.cityAreaId}
-            </div>
         </motion.div>
     )
 }
 
 function Contents() {
+    const [loading, setLoading] = useState(false);
     const [listDatas, setListDatas] = useState([]);
+    const [cityId, setCityId] = useState("");
     const serviceKey = "cMsWyKP9JICZ%2FwdGUDKNGYy0Zd%2FTLcUwYaStouO%2BPOdDQ1%2FMsE1zNuuC7%2FMf2n9N7f1BsZre7ngzY52czKk85w%3D%3D";
 
     const fatchListData = async() => {
+        setLoading(true)
         try {
-            const response = await getListData(serviceKey);
+            const response = await getListData(serviceKey, cityId);
             setListDatas(response.items.item)
+            setLoading(true)
         }catch(e){
             console.log(e)
         }
@@ -62,8 +63,7 @@ function Contents() {
 
     useEffect(() => {
         fatchListData();  
-    },[])
-    // console.log('listDatas', listDatas)
+    },[cityId])
 
     return (
         <Grid container spacing={9} className="main-content-warp">
@@ -76,15 +76,18 @@ function Contents() {
                 </Typography>
             </div>
 
-            <SelecteForm />
+            <SelecteDateForm setCityId={setCityId} />
+            <SelecteForm setCityId={setCityId} />
 
-            <AnimateSharedLayout>
-                <motion.ul layout initial={{ borderRadius: 25 }}>
-                    {listDatas?.map((item, index) => (
-                    <Item item={item} key={index} />
-                    ))}
-                </motion.ul>
-            </AnimateSharedLayout>
+            {loading &&
+                <AnimateSharedLayout>
+                    <motion.ul layout initial={{ borderRadius: 25 }}>
+                        {listDatas?.map((item, index) => (
+                        <Item item={item} key={index} />
+                        ))}
+                    </motion.ul>
+                </AnimateSharedLayout>
+            }
         </Grid>
     )
 }
